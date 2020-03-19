@@ -1,5 +1,8 @@
 package com.example.demo.uilayer.controller;
 
+import com.example.demo.servicelayer.RecommendationsService;
+import com.example.demo.shared.dto.CourseDto;
+import com.example.demo.uilayer.model.response.CourseRest;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
@@ -9,12 +12,14 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.UserBasedRecommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,8 +30,29 @@ public class RecommenderController {
     @Autowired
     DataSource dataSource;
 
-    @GetMapping
-    public String getRecommendations() {
+    @Autowired
+    RecommendationsService recommendationsService;
+
+
+    @GetMapping(value="/nonperson")
+    public List<CourseRest>  getNonPersonalizedRecommendations() {
+//        System.out.println("Inside non personalized recommendations !");
+
+        List<CourseRest> courses = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        List<CourseDto> courseDtos = this.recommendationsService.getNonPersonalizedRecommendations();
+
+        for(CourseDto courseDto : courseDtos) {
+            CourseRest courseRest =  modelMapper.map(courseDto, CourseRest.class);
+            courses.add(courseRest);
+        }
+
+        return courses;
+    }
+
+    @GetMapping(value="/collaborative")
+    public String getCollaborativeRecommendations() {
         // System.out.println(dataSource);
 
         PostgreSQLJDBCDataModel dataModel = new PostgreSQLJDBCDataModel(
@@ -52,8 +78,9 @@ public class RecommenderController {
             System.out.println(recommendation);
         }
 
-
         return "get recommenders was called";
     }
+
+
 
 }

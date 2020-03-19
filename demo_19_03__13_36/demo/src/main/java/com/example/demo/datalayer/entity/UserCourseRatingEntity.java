@@ -17,7 +17,7 @@ public class UserCourseRatingEntity implements Serializable {
     @Id
     private long courseId;
 
-    @Column(nullable = false)
+    @Column
     private float rating;
 
     @ManyToOne

@@ -4,6 +4,7 @@ import com.example.demo.servicelayer.RatingService;
 import com.example.demo.servicelayer.UserService;
 import com.example.demo.shared.dto.RatingDto;
 import com.example.demo.uilayer.model.request.RatingModel;
+import com.example.demo.uilayer.model.request.RatingsHolderModel;
 import com.example.demo.uilayer.model.response.RatingRest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class RatingsController {
                     MediaType.APPLICATION_JSON_VALUE
             }
         )
-    public List<RatingRest> createRating(@RequestBody List<RatingModel> ratings){
+    public List<RatingRest> createRating(@RequestBody RatingsHolderModel ratings){
 
         List<RatingRest> returnValue = new ArrayList<>();
 
@@ -44,7 +45,7 @@ public class RatingsController {
 
         ModelMapper modelMapper = new ModelMapper();
 
-        for(RatingModel rm : ratings){
+        for(RatingModel rm : ratings.getRatings()){
             dtoRatings.add(modelMapper.map(rm, RatingDto.class));
         }
 
