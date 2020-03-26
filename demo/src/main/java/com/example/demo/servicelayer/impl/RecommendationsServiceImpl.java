@@ -58,7 +58,7 @@ public class RecommendationsServiceImpl implements RecommendationsService {
     @Override
     public List<CourseDto> getNonPersonalizedRecommendations() {
 
-        // 1. get average of all courses, return float
+        // 1. get average of all courses,  return float
         double coursesAverage = ratingRepository.getAverageRatingForAllCourses();
         System.out.println("Courses avg is: " + coursesAverage);
 
