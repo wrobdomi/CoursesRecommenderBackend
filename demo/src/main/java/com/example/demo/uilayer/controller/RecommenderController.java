@@ -47,6 +47,8 @@ public class RecommenderController {
     @GetMapping(path="/collaborative/{userId}")
     public List<CourseRest> getCollaborativeRecommendations(@PathVariable String userId) {
 
+        System.out.println("Creating collaborative recommendations");
+
 //        PostgreSQLJDBCDataModel dataModel = new PostgreSQLJDBCDataModel(
 //                dataSource, "user_course_ratings",
 //                "user_id", "course_id",
