@@ -32,6 +32,8 @@ public class RecommenderController {
         List<CourseRest> courses = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
 
+        System.out.println("Creating non personalized recommendations");
+
         List<CourseDto> courseDtos = this.recommendationsService.getNonPersonalizedRecommendations();
 
         for(CourseDto courseDto : courseDtos) {
